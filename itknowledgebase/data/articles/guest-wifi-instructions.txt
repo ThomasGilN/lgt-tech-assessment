@@ -1,0 +1,27 @@
+GUEST WI-FI INSTRUCTIONS
+
+Northstar Labs provides a separate visitor wireless network named Northstar-Guest. It offers internet access only and does not provide access to company applications, printers, internal file shares, laboratory equipment, or private network addresses.
+
+ELIGIBILITY
+
+The guest network is intended for customers, candidates, vendors, and other visitors who are physically present at a Northstar Labs office. Employees should use the managed corporate wireless network on company devices. A personal employee device may use the guest network, but it remains subject to the acceptable-use rules below.
+
+OBTAINING ACCESS
+
+A visitor selects Northstar-Guest and opens a web browser. The registration page asks for the visitor's name, organization, and mobile number or email address. The visitor must accept the guest network terms before a temporary access code is issued.
+
+Access is valid for eight hours. A visitor staying longer can request a new code on the following day. Reception can provide help with registration but cannot view or reuse a visitor's code. A Northstar employee hosting a large event should submit a Facilities and IT request at least three business days in advance.
+
+SECURITY AND PRIVACY
+
+Guest wireless traffic is separated from the internal network. Visitors remain responsible for protecting their devices and communications. Sensitive work should use encrypted websites or the visitor's own trusted VPN. Northstar Labs does not guarantee confidentiality, availability, performance, or compatibility with every personal VPN product.
+
+Users must not attempt to scan the network, bypass access controls, interfere with other devices, distribute malware, infringe copyright, or use the service for unlawful activity. Security systems may collect technical connection information needed to operate and protect the service.
+
+TROUBLESHOOTING
+
+If the registration page does not appear, disconnect from Northstar-Guest, forget the saved network, reconnect, and open a new browser window. Temporarily disable any personal VPN until registration completes, then reconnect it if needed. Verify that the device uses automatic address and DNS settings.
+
+If a code has expired, request a new one rather than repeatedly entering the old code. Reception can confirm whether a building-wide guest network issue has been reported. The Service Desk does not configure personal devices and cannot install software on them.
+
+Guest access may be limited during a security incident, network maintenance, or unusually high demand. Business-critical visitors should arrange connectivity needs with their Northstar host before arrival.

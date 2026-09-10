@@ -1,0 +1,83 @@
+[
+  {
+    "articleId" : "6105b7aa-9511-4653-a29f-7fd6befdbd45",
+    "title" : "Password and MFA Recovery Policy",
+    "path" : "articles/password-and-mfa-policy.md",
+    "mediaType" : "text/markdown",
+    "description" : "Password reset, account lockout, and MFA device recovery procedures.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "523ee984-d5b3-41f5-a0fd-9b5ec9a52c73",
+    "title" : "Remote Access and VPN Guide",
+    "path" : "articles/remote-access-vpn-guide.md",
+    "mediaType" : "text/markdown",
+    "description" : "Requirements and troubleshooting steps for secure remote access to company systems.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "a18251ba-1152-4b29-b3ef-042fd6e9e234",
+    "title" : "Employee IT Onboarding Guide",
+    "path" : "articles/employee-it-onboarding.md",
+    "mediaType" : "text/markdown",
+    "description" : "IT preparation and first-day technology checklist for new employees.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "13f9bd91-a6cd-4764-adc4-a195ec9ce1ab",
+    "title" : "Application Access Request Policy",
+    "path" : "articles/application-access-requests.md",
+    "mediaType" : "text/markdown",
+    "description" : "Approval and review rules for standard, sensitive, and privileged application access.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "ae5bb52c-2276-4f67-a372-bd53b9a4bc24",
+    "title" : "Incident Severity and Escalation Standard",
+    "path" : "articles/incident-severity-and-escalation.md",
+    "mediaType" : "text/markdown",
+    "description" : "Incident severity definitions, response targets, ownership, and escalation procedures.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "69d03fdc-d83a-4fdc-b07c-914376ef9fc8",
+    "title" : "Phishing and Suspicious Message Response Guide",
+    "path" : "articles/phishing-response-guide.md",
+    "mediaType" : "text/markdown",
+    "description" : "Immediate reporting and containment actions for suspected phishing messages.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "b02d4364-4774-464f-a1f0-fbd80ae8ea88",
+    "title" : "Backup and File Restoration Policy",
+    "path" : "articles/backup-and-file-restoration.md",
+    "mediaType" : "text/markdown",
+    "description" : "Backup coverage, retention periods, and the process for requesting file restoration.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "925ea470-a3fb-45c6-8ab7-78177aa021a0",
+    "title" : "Patch Management and Maintenance Windows",
+    "path" : "articles/patch-management-policy.md",
+    "mediaType" : "text/markdown",
+    "description" : "Patch priorities, deployment deadlines, maintenance windows, and exception handling.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "76883b71-b3e5-43a7-88e3-af89d1e7461c",
+    "title" : "Guest Wi-Fi Instructions",
+    "path" : "articles/guest-wifi-instructions.txt",
+    "mediaType" : "text/plain",
+    "description" : "Instructions and restrictions for visitor wireless access at company offices.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }, {
+    "articleId" : "c52693b3-8f12-4cf4-b6db-9c81c9f02470",
+    "title" : "Employee Offboarding Checklist",
+    "path" : "articles/employee-offboarding-checklist.txt",
+    "mediaType" : "text/plain",
+    "description" : "Account revocation, access transfer, and equipment return steps for departing workers.",
+    "createdAt" : "2026-09-02T00:00:00Z",
+    "author" : "demo-seed"
+  }
+]

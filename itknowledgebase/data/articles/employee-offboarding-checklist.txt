@@ -1,0 +1,37 @@
+EMPLOYEE OFFBOARDING CHECKLIST
+
+PURPOSE
+
+This checklist coordinates the removal of technology access and the return or transfer of Northstar Labs information when an employee or contractor leaves. People Operations owns the official departure record. Managers must not rely on an informal chat message to start or delay access removal.
+
+BEFORE THE DEPARTURE
+
+1. People Operations records the worker's final date, exact access-disable time, manager, departure type, and whether the departure requires confidential handling.
+2. The manager identifies company records, shared mailboxes, calendars, source repositories, automated jobs, and application ownership that must be transferred.
+3. The manager submits requests for any successor access. Credentials must never be handed from the departing worker to a replacement.
+4. IT Asset Management confirms the laptop, phone, hardware security keys, access cards, peripherals, and other assigned equipment.
+5. Application owners review integrations or service credentials associated with the departing worker and replace personal ownership where necessary.
+
+The standard offboarding request should reach IT at least five business days before a planned departure. Involuntary or urgent departures follow the confidential process coordinated by People Operations and Security.
+
+ACCESS REMOVAL
+
+For a routine departure, Identity Operations disables the primary account at 18:00 in the employee's assigned office time zone on the final working day, unless People Operations records another time. Disabling the identity blocks normal sign-in, revokes active sessions, removes VPN access, and starts removal from managed application groups.
+
+For an urgent departure, an authorized People Operations representative can request immediate disablement by calling the Service Desk. The Service Desk verifies the request and pages Identity Operations. Managers cannot independently request emergency disablement without People Operations confirmation.
+
+Privileged administrator sessions, hardware keys, application-specific tokens, and remote-access certificates are revoked as part of the closure. Application owners remain responsible for credentials used by shared technical integrations; these must be rotated if the departing worker knew or controlled them.
+
+DATA HANDLING
+
+The manager identifies business files that need continued ownership. IT transfers approved company data to a restricted manager or team location. Personal files are not reviewed or transferred unless required by a documented legal or People Operations process.
+
+The departing worker must not copy company records to personal storage, forward mail to a personal account, erase business data, or factory-reset a managed device. Mailbox forwarding is not enabled automatically. A manager may request a time-limited automatic reply or delegated mailbox access when supported by policy.
+
+EQUIPMENT RETURN
+
+Office-based workers return equipment to IT or the designated local collection point by the final day. Remote workers receive a prepaid shipping label and must ship equipment within five business days. Equipment should be returned without removing asset labels or attempting to wipe the device.
+
+COMPLETION
+
+IT records returned assets, account disablement, transferred ownership, and outstanding exceptions in the offboarding request. The manager and People Operations are notified when technology offboarding is complete. Missing equipment or unresolved data ownership is escalated to the manager and Asset Management; access is not restored merely to complete a late transfer.
