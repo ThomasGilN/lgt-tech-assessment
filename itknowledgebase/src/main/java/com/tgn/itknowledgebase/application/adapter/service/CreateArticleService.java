@@ -16,8 +16,8 @@ public class CreateArticleService implements CreateArticleUseCase {
     public ArticlePreview perform(CreateArticleRequest request) {
         final var saveArticleRequest = new ArticleRepository.SaveArticleRequest(
                 request.author(),
-                request.content(),
-                request.tittle()
+                request.tittle(),
+                request.content()
         );
 
         return ArticlePreview.fromArticleMetadata(articleRepository.save(saveArticleRequest).metadata());

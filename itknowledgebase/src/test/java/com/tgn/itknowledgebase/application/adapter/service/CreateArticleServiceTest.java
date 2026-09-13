@@ -5,12 +5,14 @@ import com.tgn.itknowledgebase.application.port.out.repository.ArticleRepository
 import com.tgn.itknowledgebase.domain.model.Article;
 import com.tgn.itknowledgebase.domain.model.ArticleMetadata;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CreateArticleServiceTest {
@@ -34,6 +36,12 @@ class CreateArticleServiceTest {
         final var useCase = new CreateArticleService(repository);
 
         final var result = useCase.perform(new CreateArticleUseCase.CreateArticleRequest("author", "title", "content" ));
+
+        var requestCaptor = ArgumentCaptor.forClass(ArticleRepository.SaveArticleRequest.class);
+        verify(repository).save(requestCaptor.capture());
+        assertEquals("author", requestCaptor.getValue().author());
+        assertEquals("title", requestCaptor.getValue().title());
+        assertEquals("content", requestCaptor.getValue().content());
 
         assertEquals(id.toString(), result.id());
         assertEquals("title", result.title());
