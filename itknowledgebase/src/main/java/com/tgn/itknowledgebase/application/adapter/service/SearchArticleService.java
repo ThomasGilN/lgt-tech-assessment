@@ -53,7 +53,7 @@ public class SearchArticleService implements SearchArticleUseCase {
     }
 
     private Stream<String> getWordsStream(String string){
-        return Arrays.stream(string.split("\\s+"));
+        return Arrays.stream(string.toLowerCase().split("\\s+"));
     }
 
     record QueryToDescriptionSearchMatch(ArticleMetadata metadata, int wordMatchCount) {}

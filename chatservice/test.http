@@ -1,0 +1,27 @@
+###
+POST http://localhost:8080/api/conversations
+
+###
+@conversationId=09d3e044-8c68-40cf-8b6b-d441d263062d
+
+###
+GET http://localhost:8080/api/conversations/{{conversationId}}/events
+
+###
+POST http://localhost:8080/api/conversations/{{conversationId}}/messages
+Content-Type: Application/JSON
+
+{
+    "message" : "Can you give me the content of the article?"
+}
+### ---------------------------------------------------------------------------------------------------------
+GET http://localhost:8080/api/conversations/{{conversationId}}/operations
+
+###
+@operationId=8e1b26e9-b10d-4ab0-8854-25fb7006709f
+POST http://localhost:8080/api/conversations/{{conversationId}}/operationApprovalRequests/{{operationId}}/decision
+Content-Type: Application/JSON
+
+{
+  "decision" : "accepted"
+}
