@@ -1,0 +1,56 @@
+services:
+  ui:
+    build:
+      context: ./webui
+      args:
+        VITE_KEYCLOAK_URL: http://localhost:8080/auth
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - chatservice
+      - keycloak
+
+  chatservice:
+    build:
+      context: ./chatservice
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Set OPENAI_API_KEY in .env}
+      RAG_MCP_URL: http://itknowledgebase:8082
+      SERVER_PORT: 8081
+      KEYCLOAK_ISSUER_URI: http://localhost:8080/auth/realms/document-chat
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/auth/realms/document-chat/protocol/openid-connect/certs
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      - itknowledgebase
+      - keycloak
+
+  itknowledgebase:
+    build:
+      context: ./itknowledgebase
+    environment:
+      SERVER_PORT: 8082
+      KEYCLOAK_ISSUER_URI: http://localhost:8080/auth/realms/document-chat
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/auth/realms/document-chat/protocol/openid-connect/certs
+      ITKNOWLEDGEBASE_DIR_PATH: /app/data
+    volumes:
+      - ./itknowledgebase/data:/app/data
+    ports:
+      - "127.0.0.1:8082:8082"
+    depends_on:
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.3
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: http://localhost:8080/auth
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_PROXY_HEADERS: xforwarded
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
+    mem_limit: 1g

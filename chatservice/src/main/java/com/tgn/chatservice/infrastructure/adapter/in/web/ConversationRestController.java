@@ -5,9 +5,12 @@ import com.tgn.chatservice.application.port.in.orchestrator.ConversationOrchestr
 import com.tgn.chatservice.domain.model.conversation.ConversationUpdate;
 import com.tgn.chatservice.domain.model.operation.Operation;
 import com.tgn.chatservice.domain.model.operation.OperationApprovalUserDecision;
+import com.tgn.chatservice.infrastructure.security.McpBearerTokenRelay;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,15 +32,16 @@ public class ConversationRestController {
     }
 
     @GetMapping("/{conversationId}/operations")
-    public Mono<ResponseEntity<List<Operation>>> getAvailableOperations() {
-        return toMono(() -> ResponseEntity.ok(conversationOrchestrator.getAvailableOperations()));
+    public Mono<ResponseEntity<List<Operation>>> getAvailableOperations(@AuthenticationPrincipal Jwt jwt) {
+        return toMono(jwt, () -> ResponseEntity.ok(conversationOrchestrator.getAvailableOperations()));
     }
 
     @PostMapping({"", "/", "/{conversationId}"})
     public Mono<ResponseEntity<StartConversationResponse>> createConversation(
-            @PathVariable(required = false, value = "conversationId") UUID possibleExistingConversationId
+            @PathVariable(required = false, value = "conversationId") UUID possibleExistingConversationId,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        return toMono(() -> {
+        return toMono(jwt, () -> {
             var conversationId = conversationOrchestrator.startConversation(possibleExistingConversationId);
             var location = URI.create("/api/conversations/" + conversationId);
             return ResponseEntity
@@ -49,9 +53,10 @@ public class ConversationRestController {
     @PostMapping("/{conversationId}/messages")
     public Mono<ResponseEntity<Void>> postUserMessage(
             @PathVariable("conversationId") UUID conversationId,
-            @RequestBody(required = false) PostUserMessageRequestBody requestBody
+            @RequestBody(required = false) PostUserMessageRequestBody requestBody,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        return toMono(() -> {
+        return toMono(jwt, () -> {
             conversationOrchestrator.pushUserMessage(conversationId, requestBody.message());
             return ResponseEntity.accepted().build();
         });
@@ -71,9 +76,10 @@ public class ConversationRestController {
     public Mono<ResponseEntity<Void>> operationDecision(
             @PathVariable("conversationId") UUID conversationId,
             @PathVariable("operationId") UUID operationId,
-            @RequestBody(required = false) OperationApprovalRequestDecisionRequestBody requestBody
+            @RequestBody(required = false) OperationApprovalRequestDecisionRequestBody requestBody,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        return toMono(() -> {
+        return toMono(jwt, () -> {
             final var decision = "accepted".equals(requestBody.decision())
                     ? OperationApprovalUserDecision.APPROVED
                     : OperationApprovalUserDecision.REJECTED;
@@ -82,8 +88,9 @@ public class ConversationRestController {
         });
     }
 
-    private <T> Mono<ResponseEntity<T>> toMono(Supplier<ResponseEntity<T>> supplier) {
-        return Mono.fromCallable(supplier::get).subscribeOn(Schedulers.boundedElastic());
+    private <T> Mono<ResponseEntity<T>> toMono(Jwt jwt, Supplier<ResponseEntity<T>> supplier) {
+        return Mono.fromCallable(() -> McpBearerTokenRelay.withToken(jwt.getTokenValue(), supplier))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     private ServerSentEvent<?> toSSE(ConversationUpdate conversationUpdate) {

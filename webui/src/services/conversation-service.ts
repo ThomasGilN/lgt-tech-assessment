@@ -1,5 +1,15 @@
 import type {Operation} from "@/models/Operation.ts";
 import type {ConversationEventData, ConversationEventSource} from "@/models/Conversation.ts";
+import {keycloak} from "@/auth/keycloak.ts";
+
+async function authenticatedHeaders(headers = new Headers()): Promise<Headers> {
+    await keycloak.updateToken(30)
+    if (!keycloak.token) {
+        throw new Error('Your login session has expired.')
+    }
+    headers.set('Authorization', `Bearer ${keycloak.token}`)
+    return headers
+}
 
 interface StartConversationResponse {
     conversationId: string
@@ -22,7 +32,8 @@ interface ApproveOperationProposalRequest {
 
 export async function startConversation(possibleConversationId = ''): Promise<string> {
     const response = await fetch(`/api/conversations/${encodeURIComponent(possibleConversationId)}`, {
-        method: 'POST'
+        method: 'POST',
+        headers: await authenticatedHeaders(),
     });
 
     if(!response.ok) {
@@ -34,7 +45,9 @@ export async function startConversation(possibleConversationId = ''): Promise<st
 }
 
 export async function getAvailableOperations(request: GetAvailableOperationsRequest): Promise<Array<Operation>> {
-    const response = await fetch(`/api/conversations/${encodeURIComponent(request.conversationId)}/operations`);
+    const response = await fetch(`/api/conversations/${encodeURIComponent(request.conversationId)}/operations`, {
+        headers: await authenticatedHeaders(),
+    });
 
     if(!response.ok) {
         throw new Error('Could not get available operations for conversation.');
@@ -45,9 +58,9 @@ export async function getAvailableOperations(request: GetAvailableOperationsRequ
 
 export async function postUserMessage(request: PostUserMessageRequest): Promise<void> {
     const response = await fetch(`/api/conversations/${encodeURIComponent(request.conversationId)}/messages`, {
-        headers: {
+        headers: await authenticatedHeaders(new Headers({
             'Content-type': 'application/json',
-        },
+        })),
         method: 'POST',
         body: JSON.stringify({ message: request.userMessage })
     });
@@ -64,7 +77,7 @@ export async function approveOperationProposal(
         `/api/conversations/${encodeURIComponent(request.conversationId)}/operationApprovalRequests/${encodeURIComponent(request.operationId)}/decision`,
         {
             method: 'POST',
-            headers: { 'Content-type': 'application/json' },
+            headers: await authenticatedHeaders(new Headers({ 'Content-type': 'application/json' })),
             body: JSON.stringify({ decision: request.decision })
         }
     );
@@ -89,7 +102,7 @@ export async function subscribeToConversationsUpdates(
     const controller = new AbortController();
 
     const response = await fetch(`/api/conversations/${encodeURIComponent(request.conversationId)}/events`, {
-        headers: { Accept: 'text/event-stream' },
+        headers: await authenticatedHeaders(new Headers({ Accept: 'text/event-stream' })),
         signal: controller.signal
     })
 

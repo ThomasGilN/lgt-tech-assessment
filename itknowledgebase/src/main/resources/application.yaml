@@ -1,5 +1,5 @@
 server:
-  port: ${MCP_RAG_PORT:8082}
+  port: ${SERVER_PORT:8082}
 
 spring:
   application:
@@ -8,7 +8,14 @@ spring:
     mcp:
       server:
         protocol: STREAMABLE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/auth/realms/document-chat}
+          audiences:
+            - mcp-api
 
 itknowledgebase:
   dir:
-    path: data
+    path: ${ITKNOWLEDGEBASE_DIR_PATH:data}

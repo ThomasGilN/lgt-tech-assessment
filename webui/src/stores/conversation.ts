@@ -16,6 +16,7 @@ interface ConversationSubscription {
 export const useConversationStore = defineStore('conversation', () => {
 
     const conversation = ref<Conversation>();
+    const unsubscribeCallback = ref<() => void>();
 
     async function startConversation(possibleConversationId?: string): Promise<string> {
         const conversationId = await conversationService.startConversation(possibleConversationId);
@@ -31,7 +32,7 @@ export const useConversationStore = defineStore('conversation', () => {
     async function subscribeToServerUpdates(
         conversationId: string,
         onUpdate: (updateEvent: ConversationEvent) => void
-    ): Promise<ConversationSubscription> {
+    ): Promise<void> {
         if(!isConversationStarted()){
             throw new Error('Attempting to listen to a non started conversation');
         }
@@ -40,15 +41,16 @@ export const useConversationStore = defineStore('conversation', () => {
             throw new Error('Attempting to listen to other conversation');
         }
 
-        const { unsubscribeCallback } = await conversationService.subscribeToConversationsUpdates({
+        const subscription = await conversationService.subscribeToConversationsUpdates({
             conversationId,
             onEvent: onUpdateAddToHistory(onUpdate)
         });
 
-        return {
-            conversationId,
-            unsubscribeCallback
-        }
+        unsubscribeCallback.value = subscription.unsubscribeCallback
+    }
+
+    function unsubscribe(){
+        unsubscribeCallback.value?.();
     }
 
     function onUpdateAddToHistory(onUpdate: (updateEvent:ConversationEvent) => void): (updateEvent:ConversationEvent) => void {
@@ -63,5 +65,11 @@ export const useConversationStore = defineStore('conversation', () => {
         return conversation.value.conversationId.length > 0;
     }
 
-    return { startConversation, subscribeToServerUpdates, isConversationStarted, conversation }
+    return {
+        startConversation,
+        subscribeToServerUpdates,
+        isConversationStarted,
+        unsubscribe,
+        conversation
+    }
 })

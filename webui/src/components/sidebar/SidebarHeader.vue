@@ -1,14 +1,19 @@
 <script setup lang="ts">
 
-const username = 'Me'
-const logout = () => {
-    console.log("logout")
+import {useAuthStore} from "@/stores/auth.ts";
+import {useConversationStore} from "@/stores/conversation.ts";
+
+const authStore = useAuthStore();
+const conversationStore = useConversationStore();
+const logout = async () => {
+    conversationStore.unsubscribe()
+    await logout()
 }
 </script>
 
 <template>
     <section class="user-section">
-        <span>{{ username }}</span>
+        <span>{{ authStore.user?.displayName }}</span>
         <button type="button" @click="logout">Logout</button>
     </section>
 </template>

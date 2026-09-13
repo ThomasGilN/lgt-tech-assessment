@@ -19,3 +19,12 @@ spring:
             rag:
               url: ${RAG_MCP_URL:http://localhost:8082}
               endpoint: /mcp
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/auth/realms/document-chat}
+          audiences:
+            - chat-api
+server:
+  port: ${SERVER_PORT:8081}

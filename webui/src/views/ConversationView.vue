@@ -15,8 +15,6 @@ const props = defineProps({
 const conversationStore = useConversationStore();
 const operationStore = useOperationStore();
 
-let unsubscribeCallback = () => {}
-
 function receiveConversationEvent(event: ConversationEvent) {
     if (event.data.entryName === 'OperationProposedEvent') {
         const operationName = (event.data.parameters.operationName || '') as string;
@@ -35,17 +33,15 @@ onMounted(async () => {
         })
     } else {
         await conversationStore.startConversation(conversationId);
-        const subscription = await conversationStore.subscribeToServerUpdates(
+        await conversationStore.subscribeToServerUpdates(
             conversationId,
             receiveConversationEvent
         );
-        unsubscribeCallback = subscription.unsubscribeCallback;
-
         await operationStore.loadAvailableOperations(conversationId);
     }
 })
 
-onUnmounted(unsubscribeCallback)
+onUnmounted(conversationStore.unsubscribe)
 
 </script>
 
