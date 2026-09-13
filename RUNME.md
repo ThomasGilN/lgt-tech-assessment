@@ -52,6 +52,7 @@ docker compose version
    The first build downloads dependencies and can take several minutes. Compose starts dependencies in order but does not define readiness health checks; wait for both Spring services and Keycloak to finish starting before opening the app. Press `Ctrl+C` to stop following logs; the containers keep running.
 
 5. Open [http://localhost:8080/](http://localhost:8080/) and sign in with username **`demo`** and password **`demo`**. A conversation starts automatically after login.
+   A 502 Bad Gateway error page usually means that the application services are not ready yet, try again after a minute.
 
 Use `localhost` in the browser URL to match the configured authentication redirects and token issuer.
 
