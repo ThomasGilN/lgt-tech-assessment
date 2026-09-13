@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/sidebar/Sidebar.vue";
 import Conversation from "@/components/conversation/Conversation.vue";
-import {onMounted, onUnmounted} from "vue";
+import {onUnmounted, watch} from "vue";
 import router from "@/router";
 import {useConversationStore} from "@/stores/conversation.ts";
 import type {ConversationEvent} from "@/models/Conversation.ts";
@@ -22,24 +22,33 @@ function receiveConversationEvent(event: ConversationEvent) {
     }
 }
 
-onMounted(async () => {
-    const { conversationId = '' } = props
+watch(
+    () => props.conversationId,
+    async (requestedConversationId) => {
+        conversationStore.unsubscribe()
 
-    if(conversationId.length === 0) {
-        const newConversationId = await conversationStore.startConversation();
-        router.replace({
-            name: 'conversation',
-            params: { conversationId: newConversationId }
-        })
-    } else {
-        await conversationStore.startConversation(conversationId);
+        const conversationId = await conversationStore.startConversation(
+            requestedConversationId
+        )
+
+        // The backend returns a new ID when the requested conversation
+        // no longer exists, such as after chatservice restarts.
+        if (conversationId !== requestedConversationId) {
+            await router.replace({
+                name: 'conversation',
+                params: { conversationId }
+            })
+            return
+        }
+
         await conversationStore.subscribeToServerUpdates(
             conversationId,
             receiveConversationEvent
-        );
-        await operationStore.loadAvailableOperations(conversationId);
-    }
-})
+        )
+        await operationStore.loadAvailableOperations(conversationId)
+    },
+    { immediate: true }
+)
 
 onUnmounted(conversationStore.unsubscribe)
 

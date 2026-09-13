@@ -51,6 +51,7 @@ export const useConversationStore = defineStore('conversation', () => {
 
     function unsubscribe(){
         unsubscribeCallback.value?.();
+        unsubscribeCallback.value = undefined;
     }
 
     function onUpdateAddToHistory(onUpdate: (updateEvent:ConversationEvent) => void): (updateEvent:ConversationEvent) => void {
