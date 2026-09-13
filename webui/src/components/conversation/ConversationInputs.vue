@@ -12,24 +12,36 @@ const userInput = ref<string>('');
 const sendMessage = async () => {
     const message = userInput.value.trim()
 
-    if (!conversationStore.isConversationStarted() || !message) return
+    if (!conversationStore.isConversationStarted() || !message || conversationStore.isAwaitingAssistant) return
 
     const conversationId = (conversationStore.conversation?.conversationId || '') as string
 
-    await postUserMessage({
-        conversationId,
-        userMessage: message
-    })
-    
-    userInput.value = ''
+    conversationStore.waitForAssistant()
+
+    try {
+        await postUserMessage({
+            conversationId,
+            userMessage: message
+        })
+
+        userInput.value = ''
+    } catch (error) {
+        conversationStore.stopWaitingForAssistant()
+        throw error
+    }
 }
 
 </script>
 
 <template>
     <form class="user-input" @submit.prevent="sendMessage">
-        <textarea v-model="userInput" aria-label="Message" placeholder="Write a message"></textarea>
-        <button type="submit">Send</button>
+        <textarea
+            v-model="userInput"
+            :disabled="conversationStore.isAwaitingAssistant"
+            aria-label="Message"
+            placeholder="Write a message"
+        ></textarea>
+        <button :disabled="conversationStore.isAwaitingAssistant" type="submit">Send</button>
     </form>
 </template>
 
@@ -62,7 +74,14 @@ const sendMessage = async () => {
     border-color: var(--color-border-hover);
 }
 
+.user-input textarea:disabled {
+    background: #f0f2f7;
+    color: var(--lgt-muted);
+    cursor: not-allowed;
+}
+
 .user-input button {
+    margin: auto;
     align-self: flex-end;
     background: var(--lgt-blue);
     border: 1px solid var(--lgt-blue);
@@ -76,6 +95,12 @@ const sendMessage = async () => {
 .user-input button:hover {
     background: var(--lgt-blue-dark);
     border-color: var(--lgt-blue-dark);
+}
+
+.user-input button:disabled {
+    background: #aebce0;
+    border-color: #aebce0;
+    cursor: wait;
 }
 
 @media (max-width: 48rem) {

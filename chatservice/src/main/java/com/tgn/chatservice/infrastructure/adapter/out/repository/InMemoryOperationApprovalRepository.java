@@ -22,4 +22,9 @@ public class InMemoryOperationApprovalRepository implements OperationApprovalRep
     public Optional<OperationApprovalRequest> findById(UUID id) {
         return Optional.ofNullable(operationApprovalRequests.get(id));
     }
+
+    @Override
+    public Optional<OperationApprovalRequest> removeById(UUID id) {
+        return Optional.ofNullable(operationApprovalRequests.remove(id));
+    }
 }

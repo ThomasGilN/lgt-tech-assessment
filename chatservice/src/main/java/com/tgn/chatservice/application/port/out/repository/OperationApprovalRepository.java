@@ -11,4 +11,6 @@ public interface OperationApprovalRepository {
 
     Optional<OperationApprovalRequest> findById(UUID operationId);
 
+    Optional<OperationApprovalRequest> removeById(UUID operationId);
+
 }

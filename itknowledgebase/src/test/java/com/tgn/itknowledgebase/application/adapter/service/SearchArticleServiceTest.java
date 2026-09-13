@@ -83,8 +83,8 @@ class SearchArticleServiceTest {
         ArticleMetadata metadata1 = mock(ArticleMetadata.class);
         ArticleMetadata metadata2 = mock(ArticleMetadata.class);
 
-        var id1 = UUID.randomUUID();
-        var id2 = UUID.randomUUID();
+        var id1 = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var id2 = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         when(metadata1.articleId()).thenReturn(id1);
         when(metadata1.title()).thenReturn("article 1");

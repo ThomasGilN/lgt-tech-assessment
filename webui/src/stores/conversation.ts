@@ -17,6 +17,7 @@ export const useConversationStore = defineStore('conversation', () => {
 
     const conversation = ref<Conversation>();
     const unsubscribeCallback = ref<() => void>();
+    const isAwaitingAssistant = ref(false);
 
     async function startConversation(possibleConversationId?: string): Promise<string> {
         const conversationId = await conversationService.startConversation(possibleConversationId);
@@ -25,6 +26,7 @@ export const useConversationStore = defineStore('conversation', () => {
             conversationId,
             history: []
         }
+        isAwaitingAssistant.value = false;
 
         return conversationId;
     }
@@ -57,8 +59,21 @@ export const useConversationStore = defineStore('conversation', () => {
     function onUpdateAddToHistory(onUpdate: (updateEvent:ConversationEvent) => void): (updateEvent:ConversationEvent) => void {
         return (updateEvent: ConversationEvent) => {
             conversation.value?.history.push(updateEvent);
+
+            if (updateEvent.source === 'ASSISTANT') {
+                isAwaitingAssistant.value = false;
+            }
+
             onUpdate(updateEvent);
         }
+    }
+
+    function waitForAssistant(): void {
+        isAwaitingAssistant.value = true;
+    }
+
+    function stopWaitingForAssistant(): void {
+        isAwaitingAssistant.value = false;
     }
 
     function isConversationStarted(): boolean {
@@ -70,6 +85,9 @@ export const useConversationStore = defineStore('conversation', () => {
         startConversation,
         subscribeToServerUpdates,
         isConversationStarted,
+        isAwaitingAssistant,
+        waitForAssistant,
+        stopWaitingForAssistant,
         unsubscribe,
         conversation
     }

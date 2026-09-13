@@ -18,9 +18,9 @@ public class ApproveOperationProposalService implements ApproveOperationProposal
 
     @Override
     public OperationApprovalRequestDecision perform(ApproveOperationProposalRequest request) {
-        return operationApprovalRepository.findById(request.operationId())
+        return operationApprovalRepository.removeById(request.operationId())
                 .map( operationApprovalRequest -> {
-                    if(Instant.now().isAfter(operationApprovalRequest.expiresAt())) {
+                    if(!Instant.now().isBefore(operationApprovalRequest.expiresAt())) {
                         return new OperationApprovalRequestDecision(
                                 operationApprovalRequest.proposal(),
                                 "Operation approval request expired",

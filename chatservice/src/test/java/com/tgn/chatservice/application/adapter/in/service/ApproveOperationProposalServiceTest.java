@@ -35,7 +35,7 @@ class ApproveOperationProposalServiceTest {
                 new OperationApprovalRequest(
                 operationId,
                 proposal,
-                Instant.now()
+                Instant.now().plusSeconds(60)
         ));
 
         final var approval = service.perform(
@@ -48,6 +48,11 @@ class ApproveOperationProposalServiceTest {
 
         assertTrue(approval.isApproved());
         assertEquals("User decision", approval.reason());
+        assertTrue(repo.findById(operationId).isEmpty());
+        assertThrows(java.util.NoSuchElementException.class, () ->
+                service.perform(new ApproveOperationProposalRequest(
+                        conversationId, operationId,
+                        OperationApprovalUserDecision.APPROVED)));
     }
 
     @Test
@@ -69,7 +74,7 @@ class ApproveOperationProposalServiceTest {
                 new OperationApprovalRequest(
                         operationId,
                         proposal,
-                        Instant.now()
+                        Instant.now().plusSeconds(60)
                 ));
 
         final var approval = service.perform(
@@ -82,6 +87,11 @@ class ApproveOperationProposalServiceTest {
 
         assertFalse(approval.isApproved());
         assertEquals("User decision", approval.reason());
+        assertTrue(repo.findById(operationId).isEmpty());
+        assertThrows(java.util.NoSuchElementException.class, () ->
+                service.perform(new ApproveOperationProposalRequest(
+                        conversationId, operationId,
+                        OperationApprovalUserDecision.APPROVED)));
     }
 
     @Test
@@ -116,5 +126,6 @@ class ApproveOperationProposalServiceTest {
 
         assertFalse(approval.isApproved());
         assertEquals("Operation approval request expired", approval.reason());
+        assertTrue(repo.findById(operationId).isEmpty());
     }
 }

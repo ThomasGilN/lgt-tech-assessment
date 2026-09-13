@@ -69,6 +69,15 @@ const sendOperationDecision = async (event: ConversationEvent, decision: 'accept
                 </div>
             </div>
         </template>
+
+        <div
+            v-if="conversationStore.isAwaitingAssistant"
+            class="thinking-indicator"
+            role="status"
+        >
+            <span class="thinking-dots" aria-hidden="true">•••</span>
+            <span>Assistant is thinking</span>
+        </div>
     </section>
 </template>
 
@@ -153,6 +162,39 @@ const sendOperationDecision = async (event: ConversationEvent, decision: 'accept
     max-width: min(64%, 36rem);
     opacity: 0.82;
     padding: 0.6875rem 0.875rem;
+}
+
+.thinking-indicator {
+    align-items: center;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--lgt-border);
+    border-radius: 0.5rem;
+    color: var(--lgt-muted);
+    display: flex;
+    font-size: 0.8125rem;
+    gap: 0.5rem;
+    padding: 0.6875rem 0.875rem;
+}
+
+.thinking-dots {
+    animation: thinking-pulse 1.2s ease-in-out infinite;
+    color: var(--lgt-blue);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    line-height: 1;
+}
+
+@keyframes thinking-pulse {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .thinking-dots {
+        animation: none;
+    }
 }
 
 @media (max-width: 48rem) {
