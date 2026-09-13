@@ -12,6 +12,7 @@ import ConversationInputs from "@/components/conversation/ConversationInputs.vue
 
 <style scoped>
 .conversation {
+    background: var(--lgt-canvas);
     display: flex;
     flex: 1;
     flex-direction: column;

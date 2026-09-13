@@ -77,38 +77,91 @@ const sendOperationDecision = async (event: ConversationEvent, decision: 'accept
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.875rem;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 2.5rem 7%;
 }
 
 .message {
-    max-width: 70%;
+    border: 1px solid var(--lgt-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.5rem rgba(23, 32, 61, 0.04);
+    line-height: 1.6;
+    max-width: min(75%, 48rem);
+    padding: 1rem 1.125rem;
+    white-space: pre-wrap;
 }
 
 .assistant-separator {
+    border: 0;
+    border-top: 1px solid var(--lgt-border);
+    margin: 1rem 0 0.125rem;
     width: 100%;
 }
 
 .approval-actions {
     display: flex;
-    justify-content: space-evenly;
+    gap: 0.75rem;
+    margin-top: 1rem;
 }
 
 .approval-actions button {
+    background: var(--lgt-blue);
+    border: 1px solid var(--lgt-blue);
+    border-radius: 0.25rem;
+    color: #ffffff;
     flex: 1;
-    margin: 0 1rem;
+    font-weight: 700;
+    padding: 0.625rem 0.875rem;
+}
+
+.approval-actions button:hover {
+    background: var(--lgt-blue-dark);
+}
+
+.approval-actions button + button {
+    background: #ffffff;
+    border-color: var(--lgt-danger);
+    color: var(--lgt-danger);
+}
+
+.approval-actions button + button:hover {
+    background: #fff4f5;
 }
 
 .assistant {
     align-self: flex-start;
+    background: var(--lgt-surface);
 }
 
 .user {
     align-self: flex-end;
+    background: var(--lgt-blue-soft);
+    border-color: #cbd7f7;
 }
 
 .event {
     align-self: center;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(0.375rem);
+    -webkit-backdrop-filter: blur(0.375rem);
+    border-left: 0.1875rem solid #9aa9d4;
+    box-shadow: none;
+    color: var(--lgt-muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    max-width: min(64%, 36rem);
+    opacity: 0.82;
+    padding: 0.6875rem 0.875rem;
+}
+
+@media (max-width: 48rem) {
+    .messages {
+        padding: 1.25rem 5%;
+    }
+
+    .message {
+        max-width: 88%;
+    }
 }
 </style>

@@ -40,12 +40,11 @@ watch(
             })
             return
         }
-
+        await operationStore.loadAvailableOperations(conversationId)
         await conversationStore.subscribeToServerUpdates(
             conversationId,
             receiveConversationEvent
         )
-        await operationStore.loadAvailableOperations(conversationId)
     },
     { immediate: true }
 )
