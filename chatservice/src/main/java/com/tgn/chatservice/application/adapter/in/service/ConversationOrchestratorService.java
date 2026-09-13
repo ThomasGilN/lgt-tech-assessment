@@ -96,7 +96,25 @@ public class ConversationOrchestratorService implements ConversationOrchestrator
 
         if(decision.isApproved()){
             executeApprovedOperation(conversationId, decision.proposal());
+        } else {
+            respondToOperationDecision(conversationId);
         }
+    }
+
+    private void respondToOperationDecision(UUID conversationId) {
+        final var history = getConversationHistoryUseCase.perform(conversationId);
+        final var request = new RespondToOperationDecisionRequest(history);
+
+        String response;
+        try {
+            response = operationOrchestrator.respondToOperationDecision(request);
+        } catch (RuntimeException exception) {
+            response = "The operation was not executed. "
+                    + "I couldn't generate a follow-up response. "
+                    + "You can continue the conversation.";
+        }
+
+        recordAssistantMessage(conversationId, response);
     }
 
     private void recordOperationApprovalDecisionTakenEvent(UUID conversationId, OperationApprovalRequestDecision decision) {

@@ -2,6 +2,7 @@ package com.tgn.chatservice.application.port.out.llm;
 
 import com.tgn.chatservice.application.model.in.ExecuteOperationRequest;
 import com.tgn.chatservice.application.model.in.RequestOperationProposalRequest;
+import com.tgn.chatservice.application.model.in.RespondToOperationDecisionRequest;
 import com.tgn.chatservice.domain.model.operation.Operation;
 import com.tgn.chatservice.domain.model.operation.OperationProposalResponse;
 import com.tgn.chatservice.domain.model.operation.OperationResult;
@@ -15,4 +16,6 @@ public interface OperationOrchestrator {
     OperationProposalResponse requestOperationProposal(RequestOperationProposalRequest request);
 
     OperationResult executeOperation(ExecuteOperationRequest request);
+
+    String respondToOperationDecision(RespondToOperationDecisionRequest request);
 }
