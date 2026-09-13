@@ -24,10 +24,11 @@ public class ConversationOrchestratorService implements ConversationOrchestrator
     private final ApproveOperationProposalUseCase approveOperationProposalUseCase;
     private final GetConversationHistoryUseCase getConversationHistoryUseCase;
     private final CreateOperationApprovalRequestUseCase createOperationApprovalRequestUseCase;
+    private final VerifyConversationExistsUseCase verifyConversationExistsUseCase;
 
     private final ConversationEntryFactory conversationEntryFactory;
 
-    public ConversationOrchestratorService(OperationOrchestrator operationOrchestrator, StartConversationUseCase startConversationUseCase, PushConversationEntryUseCase pushConversationEntryUseCase, SubscribeToConversationUpdatesUseCase subscribeToConversationUpdatesUseCase, ApproveOperationProposalUseCase approveOperationProposalUseCase, GetConversationHistoryUseCase getConversationHistoryUseCase, CreateOperationApprovalRequestUseCase createOperationApprovalRequestUseCase, ConversationEntryFactory conversationEntryFactory) {
+    public ConversationOrchestratorService(OperationOrchestrator operationOrchestrator, StartConversationUseCase startConversationUseCase, PushConversationEntryUseCase pushConversationEntryUseCase, SubscribeToConversationUpdatesUseCase subscribeToConversationUpdatesUseCase, ApproveOperationProposalUseCase approveOperationProposalUseCase, GetConversationHistoryUseCase getConversationHistoryUseCase, CreateOperationApprovalRequestUseCase createOperationApprovalRequestUseCase, VerifyConversationExistsUseCase verifyConversationExistsUseCase, ConversationEntryFactory conversationEntryFactory) {
         this.operationOrchestrator = operationOrchestrator;
         this.startConversationUseCase = startConversationUseCase;
         this.pushConversationEntryUseCase = pushConversationEntryUseCase;
@@ -35,6 +36,7 @@ public class ConversationOrchestratorService implements ConversationOrchestrator
         this.approveOperationProposalUseCase = approveOperationProposalUseCase;
         this.getConversationHistoryUseCase = getConversationHistoryUseCase;
         this.createOperationApprovalRequestUseCase = createOperationApprovalRequestUseCase;
+        this.verifyConversationExistsUseCase = verifyConversationExistsUseCase;
         this.conversationEntryFactory = conversationEntryFactory;
     }
 
@@ -44,7 +46,15 @@ public class ConversationOrchestratorService implements ConversationOrchestrator
     }
 
     @Override
-    public UUID startConversation() {
+    public UUID startConversation(UUID possibleExistingConversationId) {
+        final var conversationExists = verifyConversationExistsUseCase.perform(
+                new VerifyConversationExistsRequest(possibleExistingConversationId)
+        );
+
+        if (conversationExists) {
+            return possibleExistingConversationId;
+        }
+
         return startConversationUseCase.perform();
     }
 

@@ -13,7 +13,7 @@ public interface ConversationOrchestrator {
 
     List<Operation> getAvailableOperations();
 
-    UUID startConversation();
+    UUID startConversation(UUID possibleExistingConversationId);
 
     void pushUserMessage(UUID conversationId, String message);
 

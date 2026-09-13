@@ -113,6 +113,13 @@ public class ApplicationBeansConfiguration {
     }
 
     @Bean
+    public VerifyConversationExistsUseCase verifyConversationExistsUseCase(
+            ConversationRepository conversationRepository
+    ) {
+        return new VerifyConversationExistsService(conversationRepository);
+    }
+
+    @Bean
     public ConversationOrchestrator conversationOrchestrator(
             OperationOrchestrator operationOrchestrator,
             StartConversationUseCase startConversationUseCase,
@@ -121,7 +128,8 @@ public class ApplicationBeansConfiguration {
             ApproveOperationProposalUseCase approveOperationProposalUseCase,
             GetConversationHistoryUseCase getConversationHistoryUseCase,
             CreateOperationApprovalRequestUseCase createOperationApprovalRequestUseCase,
-            ConversationEntryFactory conversationEntryFactory
+            ConversationEntryFactory conversationEntryFactory,
+            VerifyConversationExistsUseCase verifyConversationExistsUseCase
     ) {
         return new ConversationOrchestratorService(
                 operationOrchestrator,
@@ -131,6 +139,7 @@ public class ApplicationBeansConfiguration {
                 approveOperationProposalUseCase,
                 getConversationHistoryUseCase,
                 createOperationApprovalRequestUseCase,
+                verifyConversationExistsUseCase,
                 conversationEntryFactory
         );
     }

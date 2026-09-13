@@ -8,7 +8,6 @@ public class SpringSecurityGetCurrentAuthenticatedUserAdapter implements GetCurr
 {
     @Override
     public String getUsername() {
-
         var authentication = (JwtAuthenticationToken) SecurityContextHolder
                 .getContext()
                 .getAuthentication();

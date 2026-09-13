@@ -15,7 +15,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -34,19 +33,21 @@ public class ConversationRestController {
         return toMono(() -> ResponseEntity.ok(conversationOrchestrator.getAvailableOperations()));
     }
 
-    @PostMapping
-    public Mono<ResponseEntity<Map<String, UUID>>> createConversation() {
+    @PostMapping({"", "/", "/{conversationId}"})
+    public Mono<ResponseEntity<StartConversationResponse>> createConversation(
+            @PathVariable(required = false, value = "conversationId") UUID possibleExistingConversationId
+    ) {
         return toMono(() -> {
-            var conversationId = conversationOrchestrator.startConversation();
+            var conversationId = conversationOrchestrator.startConversation(possibleExistingConversationId);
             var location = URI.create("/api/conversations/" + conversationId);
             return ResponseEntity
                     .created(location)
-                    .body(Map.of("conversationId", conversationId));
+                    .body(new StartConversationResponse(conversationId));
         });
     }
 
     @PostMapping("/{conversationId}/messages")
-    public Mono<ResponseEntity<Map<String, UUID>>> postUserMessage(
+    public Mono<ResponseEntity<Void>> postUserMessage(
             @PathVariable("conversationId") UUID conversationId,
             @RequestBody(required = false) PostUserMessageRequestBody requestBody
     ) {
@@ -92,6 +93,8 @@ public class ConversationRestController {
                 .data(conversationUpdate.data())
                 .build();
     }
+
+    public record StartConversationResponse(UUID conversationId) {}
 
     public record PostUserMessageRequestBody(String message){}
 
